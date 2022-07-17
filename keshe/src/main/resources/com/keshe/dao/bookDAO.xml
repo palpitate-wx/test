@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keshe.dao.BookDAO">
+    <resultMap id="bookResultMap" type="com.keshe.dataobject.Book">
+        <id column="bookId" property="bookId"/>
+        <result column="bookName" property="bookName"/>
+        <result column="publisher" property="publisher"/>
+        <result column="author" property="author"/>
+        <result column="introduction" property="introduction"/>
+        <result column="price" property="price"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
+    <insert id="addBook" parameterType="com.keshe.dataobject.Book">
+        insert into book (bookId,bookName,publisher,author,introduction,price,amount)
+        values (#{bookId},#{bookName},#{publisher},#{author},#{introduction},#{price},1)
+    </insert>
+
+    <delete id="deleteBook">
+        delete from book where bookId=#{bookId}
+    </delete>
+
+    <select id="getAllBooks" resultMap="bookResultMap">
+        select * from book
+    </select>
+
+    <select id="getBook" resultMap="bookResultMap">
+        select * from book where bookId=#{bookId}
+    </select>
+
+    <select id="searchBooks" resultMap="bookResultMap">
+        select * from book where bookName like "%" #{keyWord} "%" union
+        select * from book where author like "%" #{keyWord} "%"
+    </select>
+</mapper>

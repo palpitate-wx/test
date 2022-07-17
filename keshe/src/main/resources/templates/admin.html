@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员页面</title>
+</head>
+<body>
+<div class="ele">
+    <ul>
+        <li class="active"><a href="#" onclick="getAllBorrowers()">借阅者信息</a></li>
+        <li ><a href="#" onclick="getAllBooks()">书籍信息</a></li>
+        <li ><a href="#">添加借阅者</a></li>
+        <li ><a href="#">添加书籍</a></li>
+        <li ><a href="#">修改密码</a></li>
+    </ul>
+</div>
+
+<div class="elec" style="display: block;" id="allBorrowers">
+
+</div>
+<div class="elec" style="display: none;" >
+    <div  id="search">
+        <input type="text" id="searchKey" placeholder="输入书名或作者查找书籍">
+        <button onclick="searchBooks()">查询书籍</button>
+    </div>
+
+    <div id="allBooks"></div>
+</div>
+<div class="elec" style="display: none;" id="addBorrower">
+    <div class="rg_center">
+        <form id="addBorrowerForm">
+            <table >
+                <tr>
+                    <td class="td_left"><label>借阅证号</label></td>
+                    <td class="td_right"><input type="text"  id="borrowId" placeholder="请输入借阅证号" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>姓名</label></td>
+                    <td class="td_right"><input type="text"  id="name" placeholder="请输入姓名" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>密码</label></td>
+                    <td class="td_right"><input type="password"id="password" placeholder="请输入密码" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>确认密码</label></td>
+                    <td class="td_right"><input type="password"id="checkPassword" placeholder="确认密码" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>性别</label></td>
+                    <td class="td_right">
+                        <select id="sex" style="width: 150px" >
+                            <option value ="男" >男</option>
+                            <option value ="女">女</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>学院</label></td>
+                    <td class="td_right"><input type="text"  id="academy" placeholder="请输入学院" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>专业</label></td>
+                    <td class="td_right"><input type="text"  id="major" placeholder="请输入专业" required></td>
+                </tr>
+            </table>
+        </form>
+
+                    <button class="myButton" onclick="addBorrower()" style="display:block;margin:0 auto">添加借阅者</button>
+
+
+    </div>
+</div>
+<div class="elec" style="display: none;" id="addBook">
+    <div class="rg_center">
+        <form id="addBookForm">
+            <table >
+                <tr>
+                    <td class="td_left"><label>书号</label></td>
+                    <td class="td_right"><input type="text"  id="bookId" placeholder="请输入书号" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>书名</label></td>
+                    <td class="td_right"><input type="text"  id="bookName" placeholder="请输入书名" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>出版社</label></td>
+                    <td class="td_right"><input type="text"  id="publisher" placeholder="请输入出版社" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>作者</label></td>
+                    <td class="td_right"><input type="text"  id="author" placeholder="请输入作者" required></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>简介</label></td>
+                    <td class="td_right"><input type="text"  id="introduction" placeholder="请输入简介"></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>价格</label></td>
+                    <td class="td_right"><input type="text"  id="price" placeholder="请输入价格" required></td>
+                </tr>
+
+            </table>
+        </form>
+
+        <button  class="myButton" onclick="addBook()" style="display:block;margin:0 auto">添加书籍</button>
+
+
+    </div>
+</div>
+
+<div class="elec" style="display: none;" id="updateAdminPassword">
+    <div class="rg_center">
+        <form>
+            <table>
+
+                <tr>
+                    <td class="td_left"><label>旧密码</label></td>
+                    <td class="td_right"><input type="password"id="old_password" placeholder="请输入旧密码"></td>
+                </tr>
+
+                <tr>
+                    <td class="td_left"><label>新密码</label></td>
+                    <td class="td_right"><input type="password"id="new_password" placeholder="确认新密码"></td>
+                </tr>
+
+            </table>
+        </form>
+
+        <button onclick="updateA()" class="myButton" style="display:block;margin:0 auto">确认修改</button>
+
+
+    </div>
+</div>
+
+</body>
+<style>
+    body{
+        background-image: linear-gradient(to right, #eee6ea, #a6c1ee);
+    }
+    .ele{
+        height: 20px;
+    }
+    ul{
+        list-style: none;
+    }
+    ul li {
+        padding-right: 30px;
+        float: left;
+    }
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    .active a {
+        border-bottom: 2px solid #F40;
+    }
+    a:hover{
+        color: #f40;
+    }
+    .elec {
+
+        margin-top: 5px;
+        margin-left: 40px;overflow-x: auto;
+
+    }
+    .elec p {
+        padding-left: 2px;
+        border-left: 1px solid #f40;
+        font-size: 14px;
+        overflow: hidden;/*溢出隐藏*/
+        text-overflow:ellipsis;/*隐藏部分显示省略号*/
+        white-space: nowrap;/*文本一行显示*/
+    }
+
+    table
+    {
+        opacity:0.9;
+        filter:alpha(opacity:70);
+        border-collapse: collapse;
+        margin: 0 auto;
+        text-align: center;
+    }
+    table td, table th
+    {
+        border: 1px solid #cad9ea;
+        color: #666;
+        height: 40px;
+        width: 150px;
+    }
+    table thead th
+    {
+        background-color: #CCE8EB;
+        width: 100px;
+    }
+    table tr:nth-child(odd)
+    {
+        background: #fff;
+    }
+    table tr:nth-child(even)
+    {
+        background: #F5FAFA;
+    }
+    img {
+
+        cursor: pointer;
+        width: 20%;
+        height: 60%;
+    }
+
+    #search{
+        height: 50px;
+    }
+    #search input {
+        position:absolute;
+        margin-left:215px;
+        width:300px;
+        height:34px;
+        padding:2px 10px;
+        font-family:"宋体";
+        font-size:16px;
+        border:1px solid #f98e37;
+        border-radius: 4px 0 0 4px;
+    }
+
+
+    #search button{
+        position:absolute;
+        margin-left:530px;
+        width: 100px;
+        height: 40px;
+        border-style:none;
+        border-radius: 0px 9px 9px 0px;
+        cursor: pointer;
+        outline: none;
+        transition: 0.2s all;
+    }
+
+    #search button:active {
+        transform: scale(0.98);
+        box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    }
+
+    .myButton {
+        box-shadow:inset 0px 1px 0px 0px #ffffff;
+        background-color:transparent;
+        border-radius:6px;
+        border:1px solid #dcdcdc;
+        display:inline-block;
+        cursor:pointer;
+        color:#777777;
+        font-family:Arial;
+        font-size:15px;
+        font-weight:bold;
+        padding:6px 24px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #ffffff;
+        margin-top: 10px;
+    }
+    .myButton:hover {
+        background-color:transparent;
+    }
+    .myButton:active {
+        transform: scale(0.98);
+        box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+
+    }
+
+    .td_right{
+        width: 300px;
+    }
+
+</style>
+<script type="text/javascript">
+    window.onload = function(){
+        console.log('[[${session.admin.adminId}]]')
+        console.log('[[${session.admin.adminName}]]')
+        borrower.borrowId='[[${session.admin.adminId}]]'
+        borrower.name='[[${session.admin.adminName}]]'
+        var obtn = document.getElementsByTagName("li");
+        var oElec = document.getElementsByClassName("elec");
+
+        var i = 0;
+
+        for(i = 0;i < obtn.length;i++){
+            obtn[i].index = i;//记录索引值
+            obtn[i].onclick = function(){
+                for(var j = 0;j < obtn.length;j++){
+                    obtn[j].className = "";
+                    oElec[j].style.display = 'none';
+                }
+                this.className = "active";
+                oElec[this.index].style.display = "block";
+            };
+        }
+        getAllBorrowers()
+        getAllBooks()
+    };
+    let admin={
+        adminId:"",
+        adminName:""
+    }
+    let contextPath="1.116.250.147"
+    function deleteB(){
+        var obj=document.elementFromPoint(event.clientX,event.clientY)
+        var lists=obj.getAttribute("alt").split(":")
+        console.log(lists)
+        if(lists[0]=="borrowId"){
+            var borrowId= lists[1]
+            fetch("http://"+contextPath+":8080/admin/deleteBorrower?borrowId="+borrowId)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (json) {
+                    getAllBorrowers()
+                    alert(json.message);
+                    console.log(json);
+                });
+        }
+
+        if(lists[0]=="bookId"){
+            var bookId=lists[1]
+            fetch("http://"+contextPath+":8080/admin/deleteBook?bookId="+bookId)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (json) {
+                    getAllBooks()
+                    alert(json.message);
+                    console.log(json);
+                });
+        }
+
+
+    }
+    function getAllBooks(){
+        fetch("http://"+contextPath+":8080/admin/getAllBooks")
+            .then(response => response.json())
+            .then(function (data){
+                console.log(data.success)
+                console.log(data);
+                var inf="<table><tr><th>书号</th><th>书名</th><th>出版社</th><th>作者</th><th>介绍</th><th>价格</th><th>库存数量</th><th>删除</th></tr>"
+                for(var i=0;i<data.data.length;i++){
+                    var book=data.data[i];
+                    inf+="<tr><td>"+book.bookId+"</td><td>"+book.bookName+"</td><td>"+book.publisher+"</td> <td>"
+                        +book.author+"</td><td>"+book.introduction+"</td><td>"+book.price+"</td><td>"+book.amount+"</td>" +
+                        "<td><img src='http://palpitate.wang/wp-content/uploads/2022/06/delete.png' onclick='deleteB()' alt='bookId:"+book.bookId+"'/></td></tr>"
+                }
+                inf+="</table>"
+                document.getElementById("allBooks").innerHTML=inf
+            })
+    }
+    function getAllBorrowers(){
+        fetch("http://"+contextPath+":8080/admin/getAllBorrowers")
+            .then(response => response.json())
+            .then(function (data) {
+                console.log(data.success)
+                console.log(data);
+                var inf="<table><tr><th>借阅证号</th><th>姓名</th><th>性别</th><th>学院</th><th>专业</th><th>借阅数量</th><th>删除</th></tr>"
+                for(var i=0;i<data.data.length;i++){
+                    var borrower=data.data[i];
+                    inf+="<tr><td>"+borrower.borrowId+"</td><td>"+borrower.name+"</td><td>"+borrower.sex+"</td> <td>"
+                        +borrower.academy+"</td><td>"+borrower.major+"</td><td>"+borrower.number+"</td>" +
+                        "<td><img src='http://palpitate.wang/wp-content/uploads/2022/06/delete.png' onclick='deleteB()' alt='borrowId:"+borrower.borrowId+"'/></td></tr>"
+                }
+                inf+="</table>"
+                document.getElementById("allBorrowers").innerHTML=inf
+            });
+
+    }
+    function searchBooks(){
+        var key=document.getElementById("searchKey").value
+        fetch("http://"+contextPath+":8080/admin/searchBooks?keyWord="+key)
+            .then(response => response.json())
+            .then(function (data){
+                console.log(data);
+                var inf="<table><tr><th>书号</th><th>书名</th><th>出版社</th><th>作者</th><th>介绍</th><th>价格</th><th>库存数量</th><th>删除</th></tr>"
+                for(var i=0;i<data.length;i++){
+                    var book=data[i];
+                    inf+="<tr><td>"+book.bookId+"</td><td>"+book.bookName+"</td><td>"+book.publisher+"</td> <td>"
+                        +book.author+"</td><td>"+book.introduction+"</td><td>"+book.price+"</td><td>"+book.amount+"</td>" +
+                        "<td><img src='http://palpitate.wang/wp-content/uploads/2022/06/delete.png' onclick='deleteB()' alt='bookId:"+book.bookId+"'/></td></tr>"
+                }
+                inf+="</table>"
+                document.getElementById("allBooks").innerHTML=inf
+            })
+    }
+    let borrower={
+        borrowId:"",
+        name:"",
+        sex:"",
+        academy: "",
+        major: "",
+        password:""
+    }
+    let book={
+        bookId:"",
+        bookName:"",
+        publisher:"",
+        author:"",
+        introduction:"",
+        price:""
+    }
+    function addBorrower(){
+        borrower.borrowId=document.getElementById("borrowId").value
+        borrower.name=document.getElementById("name").value
+        borrower.sex=document.getElementById("sex").value
+        borrower.academy=document.getElementById("academy").value
+        borrower.major=document.getElementById("major").value
+        borrower.password=document.getElementById("password").value
+        var checkPassword=document.getElementById("checkPassword").value
+        if (isNaN(borrower.borrowId) || borrower.borrowId.length<8 || borrower.borrowId.length>8) {
+            alert("借阅证号请输入8位数字")
+            document.getElementById("addBorrowerForm").reset()
+            return
+        }
+        if(borrower.password!=checkPassword){
+            alert("两次输入密码不同，请检查")
+            document.getElementById("addBorrowerForm").reset()
+            return
+        }
+
+        fetch("http://"+contextPath+":8080/admin/getBorrower?borrowId="+borrower.borrowId)
+        .then(function (response){
+            return response.json()
+        }).then(function (json){
+            console.log()
+            if(json.isSuccess){
+                alert("添加失败，借阅证号重复！！！")
+                return
+            }
+            else {
+                fetch("http://"+contextPath+":8080/admin/addBorrower", {
+                    method: "POST",
+                    body: JSON.stringify(borrower),
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                })
+                    .then(function (response) {
+                        return response.json()
+                    })
+                    .then(function (data) {
+                        console.log(data)
+                        alert(data.message)
+                    });
+            }
+        })
+
+
+        document.getElementById("addBorrowerForm").reset()
+    }
+
+    function addBook(){
+        book.bookId=document.getElementById("bookId").value
+        book.bookName=document.getElementById("bookName").value
+        book.publisher=document.getElementById("publisher").value
+        book.author=document.getElementById("author").value
+        book.introduction=document.getElementById("introduction").value
+        book.price=document.getElementById("price").value
+
+        if (isNaN(book.bookId) ||  book.bookId.length<8 || book.bookId.length>8) {
+            alert("书号请输入8位数字")
+            document.getElementById("addBookForm").reset()
+            return
+        }
+        if (isNaN(book.price)){
+            alert("价格请输入数字")
+            document.getElementById("addBookForm").reset()
+            return;
+        }
+
+        fetch("http://"+contextPath+":8080/admin/getBook?bookId="+book.bookId)
+            .then(function (response){
+                return response.json()
+            }).then(function (json){
+            console.log()
+            if(json.isSuccess){
+                alert("添加失败，书号重复！！！")
+                return
+            }
+            else {
+                fetch("http://"+contextPath+":8080/admin/addBook", {
+                    method: "POST",
+                    body: JSON.stringify(book),
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                })
+                    .then(function (response) {
+                        return response.json()
+                    })
+                    .then(function (data) {
+                        console.log(data)
+                        alert(data.message)
+                    });
+            }
+        })
+
+
+
+        document.getElementById("addBookForm").reset()
+
+    }
+
+    function updateA(){
+        var oldp=document.getElementById("old_password").value
+        var newp=document.getElementById("new_password").value
+        fetch("http://"+contextPath+":8080/admin/updateAdminPassword?adminId=1001&&old="+oldp+"&&new="+newp)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                alert(json.message);
+                console.log(json);
+            });
+    }
+</script>
+</html>

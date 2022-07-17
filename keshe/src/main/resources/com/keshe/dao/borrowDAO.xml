@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keshe.dao.BorrowerDAO">
+    <resultMap id="borrowResultMap" type="com.keshe.dataobject.Borrower">
+        <id column="borrowId" property="borrowId"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="academy" property="academy"/>
+        <result column="major" property="major"/>
+        <result column="password" property="password"/>
+        <result column="number" property="number"/>
+    </resultMap>
+
+    <resultMap id="borrowingResultMap" type="com.keshe.pojo.Borrowing">
+        <id column="borrowId" property="borrowId"/>
+        <id column="bookId" property="bookId"/>
+        <result column="name" property="name"/>
+        <result column="bookName" property="bookName"/>
+        <result column="borrowTime" property="borrowTime"/>
+        <result column="returnTime" property="returnTime"/>
+        <result column="delay" property="delay"/>
+    </resultMap>
+
+    <insert id="addBorrower" parameterType="com.keshe.dataobject.Borrower">
+        insert into borrower (borrowId,name,sex,academy,major,password)
+        values (#{borrowId},#{name},#{sex},#{academy},#{major},#{password})
+    </insert>
+
+    <delete id="deleteBorrower">
+        delete from borrower where borrowId=#{borrowId}
+    </delete>
+
+    <select id="getBorrower" resultMap="borrowResultMap">
+        select * from borrower where borrowId=#{borrowId}
+    </select>
+
+    <select id="getAllBorrower" resultMap="borrowResultMap">
+        select * from borrower
+    </select>
+
+    <select id="getAllBorrowing" resultMap="borrowingResultMap">
+        select borrowing.borrowId,name,borrowing.bookId,bookName,borrowTime,returnTime,delay from borrowing,borrower,book
+        where book.bookId=borrowing.bookId and borrower.borrowId=borrowing.borrowId and borrowing.borrowId=#{borrowId}
+        and borrowing.returnTime is null
+    </select>
+
+    <insert id="borrowBook">
+        insert into borrowing (borrowId,bookId,borrowTime)
+        values (#{borrowId},#{bookId},now())
+    </insert>
+
+    <update id="updateBorrowNumber">
+        update borrower set number=#{number} where borrowId=#{borrowId}
+    </update>
+
+    <update id="updateBookAmount">
+        update book set amount=#{amount} where bookId=#{bookId}
+    </update>
+
+    <update id="updatePassword">
+        update borrower set password=#{newPassword} where borrowId=#{borrowId}
+    </update>
+
+    <update id="returnBook">
+        update borrowing set returnTime=now() where borrowId=#{borrowId} and bookId=#{bookId}
+    </update>
+
+    <select id="getBorrowing" resultMap="borrowingResultMap">
+        select borrowing.borrowId,name,borrowing.bookId,bookName,borrowTime,returnTime,delay from borrowing,borrower,book
+        where book.bookId=borrowing.bookId and borrower.borrowId=borrowing.borrowId and borrowing.borrowId=#{borrowId} and borrowing.bookId=#{bookId}
+        and borrowing.returnTime is null
+    </select>
+
+    <update id="borrowingDelay">
+        update borrowing set delay=1 where borrowId=#{borrowId} and bookId=#{bookId} and borrowTime=#{borrowTime}
+    </update>
+</mapper>
