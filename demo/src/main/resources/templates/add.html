@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>add</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <form action="/add" th:object="${person}">
+
+        <div th:classappend="${#fields.hasErrors('id')} ? 'error' : ''">
+            <label>编号:</label>
+            <input type="text" name="id" th:field="*{id}">
+        </div>
+        <div th:classappend="${#fields.hasErrors('name')} ? 'error' : ''">
+            <label>姓名:</label>
+            <input type="text" name="name" th:field="*{name}">
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+        </div>
+
+        <div th:classappend="${#fields.hasErrors('tel')} ? 'error' : ''">
+            <label>电话:</label>
+            <input type="text" name="tel" th:field="*{tel}">
+            <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}"></p>
+        </div>
+
+        <div th:classappend="${#fields.hasErrors('address')} ? 'error' : ''">
+            <label>地址:</label>
+            <input type="text" name="address" th:field="*{address}">
+            <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+        </div>
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
